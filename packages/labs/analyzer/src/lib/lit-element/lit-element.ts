@@ -12,10 +12,7 @@
 
 import ts from 'typescript';
 import {getClassMembers, getHeritage} from '../javascript/classes.js';
-import {
-  LitElementDeclaration,
-  AnalyzerInterface
-} from '../model.js';
+import {LitElementDeclaration, AnalyzerInterface} from '../model.js';
 import {isCustomElementDecorator} from './decorators.js';
 import {getProperties} from './properties.js';
 import {

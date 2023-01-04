@@ -12,7 +12,7 @@
  */
 
 import ts from 'typescript';
-import {getHeritage} from '../javascript/classes.js';
+import {getClassMembers, getHeritage} from '../javascript/classes.js';
 import {
   AnalyzerInterface,
   CustomElementDeclaration,
@@ -170,5 +170,6 @@ export const getCustomElementDeclaration = (
     node,
     ...getJSDocData(node, analyzer),
     getHeritage: () => getHeritage(node, analyzer),
+    ...getClassMembers(node, analyzer),
   });
 };
