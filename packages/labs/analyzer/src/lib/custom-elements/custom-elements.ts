@@ -15,6 +15,7 @@ import type ts from 'typescript';
 import {getClassMembers, getHeritage} from '../javascript/classes.js';
 import {
   AnalyzerInterface,
+  Attribute,
   CustomElementDeclaration,
   Event,
   NamedDescribed,
@@ -24,6 +25,7 @@ import {
   parseNodeJSDocInfo,
   parseNamedTypedJSDocInfo,
 } from '../javascript/jsdoc.js';
+import {addJSDocAttributeToMap} from './attributes.js';
 
 const _isCustomElementClassDeclaration = (
   t: ts.BaseType,
@@ -132,6 +134,7 @@ export const getJSDocData = (
   node: ts.ClassDeclaration,
   analyzer: AnalyzerInterface
 ) => {
+  const attributes = new Map<string, Attribute>();
   const events = new Map<string, Event>();
   const slots = new Map<string, NamedDescribed>();
   const cssProperties = new Map<string, NamedDescribed>();
@@ -140,6 +143,9 @@ export const getJSDocData = (
   if (jsDocTags !== undefined) {
     for (const tag of jsDocTags) {
       switch (tag.tagName.text) {
+        case 'attr':
+          addJSDocAttributeToMap(tag, attributes, analyzer);
+          break;
         case 'fires':
           addEventsToMap(tag, events, analyzer);
           break;
@@ -161,6 +167,7 @@ export const getJSDocData = (
   }
   return {
     ...parseNodeJSDocInfo(node, analyzer),
+    attributes,
     events,
     slots,
     cssProperties,
