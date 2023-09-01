@@ -17,8 +17,8 @@
               "kind": "field",
               "name": "foo",
               "privacy": "public",
-              "attribute": "foo",
-              "type": {"text": "string | undefined"}
+              "type": {"text": "string | undefined"},
+              "attribute": "foo"
             },
             {
               "kind": "field",
@@ -63,11 +63,9 @@
           "attributes": [
             {
               "name": "count",
+              "type": {"text": "number"},
               "description": "Count of things",
-              "default": "0",
-              "type": {
-                "text": "number"
-              }
+              "default": "0"
             }
           ],
           "events": [
@@ -246,7 +244,8 @@
               "kind": "field",
               "name": "foo",
               "privacy": "public",
-              "type": {"text": "string | undefined"}
+              "type": {"text": "string | undefined"},
+              "attribute": "foo"
             },
             {
               "kind": "method",
@@ -561,50 +560,49 @@
               "name": "aStr",
               "privacy": "public",
               "type": {"text": "string"},
-              "attribute": "aStr",
-              "default": "'aStr'"
+              "default": "'aStr'",
+              "attribute": "astr"
             },
             {
               "kind": "field",
               "name": "aNum",
               "privacy": "public",
               "type": {"text": "number"},
-              "attribute": "aNum",
-              "default": "-1"
+              "default": "-1",
+              "attribute": "anum"
             },
             {
               "kind": "field",
               "name": "aBool",
               "privacy": "public",
               "type": {"text": "boolean"},
-              "attribute": "aBool",
-              "default": "false"
+              "default": "false",
+              "attribute": "abool"
             },
             {
               "kind": "field",
               "name": "aStrArray",
               "privacy": "public",
               "type": {"text": "string[]"},
-              "attribute": "aStrArray",
-              "default": "['a', 'b']"
+              "default": "['a', 'b']",
+              "attribute": "astrarray"
             },
             {
               "kind": "field",
               "name": "aReflect",
               "privacy": "public",
               "type": {"text": "string"},
-              "reflects": true,
+              "default": "'reflect'",
               "attribute": "areflect",
-              "default": "'reflect'"
+              "reflects": true
             },
             {
               "kind": "field",
               "name": "aCustomAttr",
               "privacy": "public",
               "type": {"text": "string"},
-              "reflects": true,
-              "attribute": "custom-attr",
-              "default": "'custom-attr'"
+              "default": "'custom-attr'",
+              "attribute": "custom-attr"
             },
             {
               "kind": "field",
@@ -689,7 +687,8 @@
               "name": "mainDefault",
               "privacy": "public",
               "type": {"text": "string"},
-              "default": "'mainDefault'"
+              "default": "'mainDefault'",
+              "attribute": "maindefault"
             },
             {
               "kind": "method",
@@ -871,7 +870,8 @@
               "kind": "field",
               "name": "foo",
               "privacy": "public",
-              "type": {"text": "string | undefined"}
+              "type": {"text": "string | undefined"},
+              "attribute": "foo"
             },
             {
               "kind": "field",
