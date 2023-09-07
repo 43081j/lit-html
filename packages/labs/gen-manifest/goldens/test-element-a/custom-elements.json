@@ -697,6 +697,14 @@
           },
           "attributes": [
             {
+              "name": "custom-attr",
+              "fieldName": "aCustomAttr",
+              "default": "'custom-attr'",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "astr",
               "fieldName": "aStr",
               "default": "'aStr'",
@@ -737,9 +745,9 @@
               }
             },
             {
-              "name": "custom-attr",
-              "fieldName": "aCustomAttr",
-              "default": "'custom-attr'",
+              "name": "acustomconverter",
+              "fieldName": "aCustomConverter",
+              "default": "'custom-converter'",
               "type": {
                 "text": "string"
               }
@@ -803,6 +811,17 @@
               "attribute": "custom-attr",
               "privacy": "public",
               "default": "'custom-attr'",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "aCustomConverter",
+              "description": "result of conversion",
+              "attribute": "acustomconverter",
+              "privacy": "public",
+              "default": "'custom-converter'",
               "type": {
                 "text": "string"
               }

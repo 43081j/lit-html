@@ -12,11 +12,16 @@
  */
 
 import type ts from 'typescript';
-import {getClassMembers, getHeritage} from '../javascript/classes.js';
+import {
+  ClassMemberInfo,
+  getClassMembers,
+  getHeritage,
+} from '../javascript/classes.js';
 import {
   AnalyzerInterface,
   Attribute,
   CustomElementDeclaration,
+  CustomElementField,
   Event,
   NamedDescribed,
 } from '../model.js';
@@ -132,7 +137,8 @@ const addNamedJSDocInfoToMap = (
  */
 export const getJSDocData = (
   node: ts.ClassDeclaration,
-  analyzer: AnalyzerInterface
+  analyzer: AnalyzerInterface,
+  customElementFieldMap: Map<string, CustomElementField>
 ) => {
   const attributes = new Map<string, Attribute>();
   const events = new Map<string, Event>();
@@ -145,7 +151,12 @@ export const getJSDocData = (
       switch (tag.tagName.text) {
         case 'attr':
         case 'attribute':
-          addJSDocAttributeToMap(tag, attributes, analyzer);
+          addJSDocAttributeToMap(
+            tag,
+            attributes,
+            analyzer,
+            customElementFieldMap
+          );
           break;
         case 'fires':
           addEventsToMap(tag, events, analyzer);
@@ -176,16 +187,39 @@ export const getJSDocData = (
   };
 };
 
+/**
+ * Use this map to merge JSDoc `@attr` docs with those derived
+ * from class-field docs
+ */
+export const getCustomElementFieldMapByAttribute = (members: ClassMemberInfo) =>
+  new Map<string, CustomElementField>(
+    Array.from(members.fieldMap, ([, field]) =>
+      field instanceof CustomElementField && field.attribute
+        ? [field.name, field]
+        : []
+    ).filter(
+      (x: unknown[]): x is [string, CustomElementField] => x.length === 2
+    )
+  );
+
 export const getCustomElementDeclaration = (
   node: CustomElementClassDeclaration,
   analyzer: AnalyzerInterface
 ): CustomElementDeclaration => {
+  const members = getClassMembers(node, analyzer);
+  const customElementFieldMap = getCustomElementFieldMapByAttribute(members);
+  const {attributes, ...jsDocData} = getJSDocData(
+    node,
+    analyzer,
+    customElementFieldMap
+  );
   return new CustomElementDeclaration({
     tagname: getTagName(node, analyzer),
     name: node.name?.text ?? '',
     node,
-    ...getJSDocData(node, analyzer),
+    ...jsDocData,
     getHeritage: () => getHeritage(node, analyzer),
-    ...getClassMembers(node, analyzer),
+    attributes,
+    ...members,
   });
 };
