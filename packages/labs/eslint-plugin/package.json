@@ -1,5 +1,6 @@
 {
   "name": "eslint-plugin-lit",
+  "type": "module",
   "private": true,
   "version": "0.0.0",
   "description": "Lit support for ESLint",
@@ -12,13 +13,29 @@
     "directory": "packages/labs/esling-plugin-lit"
   },
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "build": "wireit",
     "test": "wireit"
   },
   "wireit": {
     "build": {
+      "dependencies": [
+        "build:types"
+      ],
+      "command": "esbuild --platform=node --bundle --outfile=index.js --format=cjs --external:typescript --external:tslib --external:espree --external:@typescript-eslint src/index.ts",
+      "files": [
+        "src/**/*.ts",
+        "tsconfig.json"
+      ],
+      "output": [
+        "index.{js,js.map,d.ts,d.ts.map}"
+      ],
+      "clean": "if-file-deleted"
+    },
+    "build:types": {
+      "dependencies": [
+        "../analyzer:build"
+      ],
       "command": "tsc --build --pretty",
       "files": [
         "src/**/*.ts",
@@ -27,17 +44,15 @@
       "output": [
         "lib",
         "test",
-        "index.{js,js.map,d.ts,d.ts.map}",
         "tsconfig.tsbuildinfo"
       ],
       "clean": "if-file-deleted"
     },
     "test": {
       "#comment": "The quotes around the file regex must be double quotes on windows!",
-      "command": "cross-env NODE_OPTIONS=--enable-source-maps uvu test \"_test\\.js$\"",
+      "command": "c8 --reporter=lcov mocha \"lib/test/**/*_test.js\"",
       "dependencies": [
-        "build",
-        "../../lit:build"
+        "build"
       ],
       "files": [],
       "output": []
@@ -49,7 +64,31 @@
     "!/lib/.tsbuildinfo"
   ],
   "exports": {
-    ".": "./index.js"
+    ".": {
+      "require": "./index.js"
+    }
   },
-  "dependencies": {}
+  "peerDependencies": {
+    "eslint": ">= 8"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@lit-labs/analyzer": "^0.11.0",
+    "@typescript-eslint/utils": "^6.7.5"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.44.3",
+    "@types/node": "^20.8.0",
+    "@typescript-eslint/rule-tester": "^6.7.5",
+    "c8": "^8.0.1",
+    "chai": "^5.0.0-alpha.1",
+    "esbuild": "^0.19.4",
+    "eslint": "^8.50.0",
+    "mocha": "^10.2.0",
+    "typescript": "~5.2.0"
+  }
 }

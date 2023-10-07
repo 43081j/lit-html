@@ -26,6 +26,7 @@ export type {
   ModuleWithLitElementDeclarations,
   DeprecatableDescribed,
   FunctionDeclaration,
+  ReactiveProperty,
 } from './lib/model.js';
 
 export type {AbsolutePath, PackagePath} from './lib/paths.js';
